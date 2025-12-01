@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dienstplan Assistent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">Dienstplan</div>
+    <nav class="nav-links">
+      <a href="#rollen">Zugänge</a>
+      <a href="#assistenten">Assistenten</a>
+      <a href="#planung">Planung</a>
+    </nav>
+    <div class="status-pill" id="status-pill">Nicht angemeldet</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Webbasiertes Dienstplanungstool</p>
+        <h1>Klare Planung, klare Verantwortung</h1>
+        <p class="lead">Admins behalten den Überblick, Assistenten tragen ihre Wünsche selbst ein – inklusive Früh-, Spät- und Nachtdiensten, Wochenend- und Visitendiensten sowie Urlaubsanträgen.</p>
+        <div class="cta-group">
+          <button id="open-admin" class="btn primary">Admin Login</button>
+          <button id="open-assistant" class="btn ghost">Assistent Login</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Planungsstatus</h3>
+        <p>Zeitraum: <span id="hero-range">nächste 60 Tage</span></p>
+        <div id="hero-stats" class="stat-grid"></div>
+      </div>
+    </section>
+
+    <section id="rollen" class="panel-grid">
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Admin</p>
+            <h2>Zentrale Steuerung</h2>
+          </div>
+          <span class="tag">Rolle</span>
+        </div>
+        <p>Admins verwalten Zugänge, definieren Standards (Mo–Fr Frühdienst) und prüfen, welche Tage bereits mit Wünschen belegt sind.</p>
+        <form id="admin-login" class="form-inline" hidden>
+          <input type="password" id="admin-password" placeholder="Admin-Passwort" required />
+          <button class="btn primary" type="submit">Anmelden</button>
+        </form>
+        <div id="admin-area" class="stack" hidden>
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>Assistenten verwalten</h3>
+              <button class="btn ghost" id="add-assistant">+ Assistent anlegen</button>
+            </div>
+            <div id="assistant-list" class="list"></div>
+          </div>
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>Belegte Tage (nächste 60 Tage)</h3>
+              <span class="hint">Dienstwünsche im Blick behalten</span>
+            </div>
+            <div id="occupancy" class="occupancy"></div>
+          </div>
+        </div>
+      </article>
+
+      <article id="assistenten" class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Assistenz</p>
+            <h2>Dienstwünsche eintragen</h2>
+          </div>
+          <span class="tag">Self-Service</span>
+        </div>
+        <p>Assistent:innen tragen ihre Dienst- und Urlaubswünsche für die kommenden Monate selbst ein. Sie sehen sofort, welche Tage schon belegt sind.</p>
+        <form id="assistant-login" class="form-inline" hidden>
+          <select id="assistant-select" required></select>
+          <input type="password" id="assistant-pin" placeholder="PIN" required />
+          <button class="btn primary" type="submit">Anmelden</button>
+        </form>
+        <div id="assistant-area" class="stack" hidden>
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>Monatliche Planung</h3>
+              <input type="month" id="month-picker" />
+            </div>
+            <div id="planner" class="planner"></div>
+            <div class="actions">
+              <button class="btn primary" id="save-plan">Dienstwünsche speichern</button>
+              <span class="hint">Default: Mo–Fr Frühdienst, Wochenenden Frühdienst</span>
+            </div>
+          </div>
+          <div class="subpanel">
+            <div class="subpanel-header">
+              <h3>Sichtbare Belegungen</h3>
+              <span class="hint">Welche Dienste sind schon gewünscht?</span>
+            </div>
+            <div id="assistant-occupancy" class="occupancy"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Assistent anlegen</h3>
+        <button id="close-modal" aria-label="Schließen">×</button>
+      </div>
+      <form id="create-assistant" class="stack">
+        <label>
+          Name
+          <input type="text" id="assistant-name" required />
+        </label>
+        <label>
+          PIN (4–6 Zeichen)
+          <input type="text" id="assistant-pin-new" minlength="4" maxlength="6" required />
+        </label>
+        <button class="btn primary" type="submit">Speichern</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
