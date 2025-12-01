@@ -1,7 +1,7 @@
 const STORAGE_KEY = "dienstplan-data";
 const DEFAULT_ASSISTANTS = [
-  { id: "a1", name: "Anna Becker", color: "#5b8def", pin: "1234" },
-  { id: "a2", name: "Cem Kaya", color: "#22c55e", pin: "5678" },
+  { id: "a1", name: "Anna Becker", pin: "1234" },
+  { id: "a2", name: "Cem Kaya", pin: "5678" },
 ];
 const SHIFTS = [
   { value: "frueh", label: "Frühdienst" },
@@ -20,6 +20,8 @@ const assistantList = document.getElementById("assistant-list");
 const assistantSelect = document.getElementById("assistant-select");
 const planner = document.getElementById("planner");
 const monthPicker = document.getElementById("month-picker");
+const adminLoginForm = document.getElementById("admin-login");
+const assistantLoginForm = document.getElementById("assistant-login");
 
 let state = loadState();
 let currentAssistant = null;
@@ -105,7 +107,6 @@ function renderAssistants() {
         <strong>${a.name}</strong>
         <p class="hint">PIN: ${a.pin}</p>
       </div>
-      <div class="badge color"><span style="background:${a.color}"></span>${a.color}</div>
     `;
     assistantList.appendChild(item);
 
@@ -132,7 +133,7 @@ function renderOccupancy(target, days = 60) {
       entries.forEach((e) => {
         const assistant = state.assistants.find((a) => a.id === e.assistantId);
         const li = document.createElement("li");
-        li.innerHTML = `<span style="color:${assistant?.color || "#fff"}">●</span> ${assistant?.name || "?"} – ${labelForShift(e.shift)}`;
+        li.textContent = `${assistant?.name || "?"} – ${labelForShift(e.shift)}`;
         list.appendChild(li);
       });
     }
@@ -200,6 +201,18 @@ function persistPlan() {
   buildHeroStats();
 }
 
+function showAdminLogin() {
+  adminLoginForm.hidden = false;
+  document.getElementById("admin-password").focus();
+  document.getElementById("rollen").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function showAssistantLogin() {
+  assistantLoginForm.hidden = false;
+  assistantSelect.focus();
+  document.getElementById("assistenten").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 function loginAdmin(event) {
   event.preventDefault();
   const password = document.getElementById("admin-password").value;
@@ -245,7 +258,6 @@ function closeModal() {
 function createAssistant(event) {
   event.preventDefault();
   const name = document.getElementById("assistant-name").value.trim();
-  const color = document.getElementById("assistant-color").value;
   const pin = document.getElementById("assistant-pin-new").value.trim();
   if (pin.length < 4) {
     alert("Bitte PIN mit mindestens 4 Zeichen vergeben.");
@@ -254,7 +266,6 @@ function createAssistant(event) {
   const newAssistant = {
     id: crypto.randomUUID(),
     name,
-    color,
     pin,
   };
   state.assistants.push(newAssistant);
@@ -270,10 +281,8 @@ function attachEvents() {
   document.getElementById("add-assistant").addEventListener("click", openModal);
   document.getElementById("close-modal").addEventListener("click", closeModal);
   document.getElementById("create-assistant").addEventListener("submit", createAssistant);
-  document.getElementById("open-admin").addEventListener("click", () =>
-    document.getElementById("admin-password").focus()
-  );
-  document.getElementById("open-assistant").addEventListener("click", () => assistantSelect.focus());
+  document.getElementById("open-admin").addEventListener("click", showAdminLogin);
+  document.getElementById("open-assistant").addEventListener("click", showAssistantLogin);
   monthPicker.addEventListener("change", (event) => renderPlanner(event.target.value));
 }
 

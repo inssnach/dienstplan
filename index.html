@@ -48,7 +48,7 @@
           <span class="tag">Rolle</span>
         </div>
         <p>Admins verwalten Zugänge, definieren Standards (Mo–Fr Frühdienst) und prüfen, welche Tage bereits mit Wünschen belegt sind.</p>
-        <form id="admin-login" class="form-inline">
+        <form id="admin-login" class="form-inline" hidden>
           <input type="password" id="admin-password" placeholder="Admin-Passwort" required />
           <button class="btn primary" type="submit">Anmelden</button>
         </form>
@@ -79,7 +79,7 @@
           <span class="tag">Self-Service</span>
         </div>
         <p>Assistent:innen tragen ihre Dienst- und Urlaubswünsche für die kommenden Monate selbst ein. Sie sehen sofort, welche Tage schon belegt sind.</p>
-        <form id="assistant-login" class="form-inline">
+        <form id="assistant-login" class="form-inline" hidden>
           <select id="assistant-select" required></select>
           <input type="password" id="assistant-pin" placeholder="PIN" required />
           <button class="btn primary" type="submit">Anmelden</button>
@@ -118,10 +118,6 @@
         <label>
           Name
           <input type="text" id="assistant-name" required />
-        </label>
-        <label>
-          Teamfarbe (für Übersicht)
-          <input type="color" id="assistant-color" value="#5b8def" />
         </label>
         <label>
           PIN (4–6 Zeichen)
